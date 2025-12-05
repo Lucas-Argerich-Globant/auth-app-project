@@ -1,0 +1,17 @@
+import jwt from 'jsonwebtoken'
+import authTokenSchema from '../models/authToken'
+import { User } from '../models/user'
+
+const SECRET_KEY = process.env.JWT_SECRET || 'your_secret_key'
+
+function createToken(user: User, daysToExpire: number): string {
+  const tokenBody = authTokenSchema.parse({
+    user,
+    exp: Math.floor((Date.now() + new Date(0).setHours(24 * daysToExpire)) / 1000),
+    iat: Math.floor(Date.now() / 1000),
+  })
+  const token = jwt.sign(tokenBody, SECRET_KEY)
+  return token
+}
+
+export { createToken }
