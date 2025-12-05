@@ -1,6 +1,6 @@
 import z from 'zod'
 
-const registerPayload = z.object({
+const registerPayloadSchema = z.object({
   firstName: z.string().min(1),
   middleName: z.string().optional(),
   lastName: z.string().min(1),
@@ -8,6 +8,6 @@ const registerPayload = z.object({
   password: z.string().min(6),
 })
 
-export type RegisterPayload = z.infer<typeof registerPayload>
+export type RegisterPayload = z.infer<typeof registerPayloadSchema>
 
-export default registerPayload
+export default registerPayloadSchema

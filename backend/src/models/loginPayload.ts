@@ -1,10 +1,10 @@
 import z from 'zod'
 
-const loginPayload = z.object({
+const loginPayloadSchema = z.object({
   email: z.email(),
   password: z.string().min(6),
 })
 
-export type LoginPayload = z.infer<typeof loginPayload>
+export type LoginPayload = z.infer<typeof loginPayloadSchema>
 
-export default loginPayload
+export default loginPayloadSchema

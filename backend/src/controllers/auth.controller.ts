@@ -2,7 +2,7 @@ import { Request, Response } from 'express'
 import registerPayload from '../models/registerPayload'
 import { prisma } from '../config/prisma'
 import { hashPassword } from '../utils/auth.utils'
-import loginPayload from '../models/loginPayload'
+import loginPayloadSchema from '../models/loginPayload'
 
 async function registerUser(req: Request, res: Response) {
   const parsedPayload = registerPayload.parse(req.body)
@@ -42,7 +42,7 @@ async function registerUser(req: Request, res: Response) {
 }
 
 async function loginUser(req: Request, res: Response) {
-  const parsedPayload = loginPayload.parse(req.body)
+  const parsedPayload = loginPayloadSchema.parse(req.body)
 
   const user = await prisma.user.findFirst({ where: { email: parsedPayload.email } })
 
