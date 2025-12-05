@@ -2,6 +2,7 @@ import { Request, Response } from 'express'
 import registerPayload from '../models/registerPayload'
 import { prisma } from '../config/prisma'
 import { hashPassword } from '../utils/auth.utils'
+import loginPayload from '../models/loginPayload'
 
 async function registerUser(req: Request, res: Response) {
   const parsedPayload = registerPayload.parse(req.body)
@@ -41,7 +42,33 @@ async function registerUser(req: Request, res: Response) {
 }
 
 async function loginUser(req: Request, res: Response) {
-  // Handle login logic here
+  const parsedPayload = loginPayload.parse(req.body)
+
+  const user = await prisma.user.findFirst({ where: { email: parsedPayload.email } })
+
+  if (!user) {
+    return res.status(400).json({
+      status: 'error',
+      message: 'Invalid email or password',
+    })
+  }
+
+  const { pass_hash, ...userWithoutPassHash } = user
+
+  const hashedPassword = await hashPassword(parsedPayload.password)
+  if (pass_hash !== hashedPassword) {
+    return res.status(400).json({
+      status: 'error',
+      message: 'Invalid email or password',
+    })
+  }
+
+  return res.status(200).json({
+    status: 'success',
+    data: {
+      user: userWithoutPassHash,
+    },
+  })
 }
 
 async function getUser(req: Request, res: Response) {
