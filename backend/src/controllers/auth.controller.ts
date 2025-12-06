@@ -99,7 +99,30 @@ async function loginUser(req: Request, res: Response) {
 }
 
 async function getUser(req: Request, res: Response) {
-  const user = req.user
+  const rawUser = await prisma.user.findUnique({
+    where: { id: req.user!.id },
+    omit: {
+      pass_hash: true,
+    },
+  })
+
+  // This check is mostly redundant due to requireAuth middleware
+  if (!rawUser) {
+    return res.status(404).json({
+      status: 'error',
+      message: 'User not found',
+    })
+  }
+
+  const user = userSchema.parse({
+    id: rawUser.id,
+    email: rawUser.email,
+    firstName: rawUser.first_name,
+    middleName: rawUser.middle_name,
+    lastName: rawUser.last_name,
+    createdAt: rawUser.created_at,
+    updatedAt: rawUser.updated_at,
+  })
 
   return res.status(200).json({
     status: 'success',
