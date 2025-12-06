@@ -1,7 +1,7 @@
 import type { Request, Response } from 'express'
 import registerPayload from '../models/registerPayload.ts'
 import { prisma } from '../config/prisma.ts'
-import { hashPassword } from '../utils/auth.utils.ts'
+import { comparePassword, hashPassword } from '../utils/auth.utils.ts'
 import loginPayloadSchema from '../models/loginPayload.ts'
 import { createToken } from '../services/jwt.ts'
 import userSchema from '../models/user.ts'
@@ -68,9 +68,9 @@ async function loginUser(req: Request, res: Response) {
     })
   }
 
-  const hashedPassword = await hashPassword(parsedPayload.password)
+  const isCorrectPassword = await comparePassword(parsedPayload.password, rawUser.pass_hash)
 
-  if (rawUser.pass_hash !== hashedPassword) {
+  if (!isCorrectPassword) {
     return res.status(400).json({
       status: 'error',
       message: 'Invalid email or password',
