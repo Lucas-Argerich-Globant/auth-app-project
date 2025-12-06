@@ -1,4 +1,4 @@
-import { Request, Response } from 'express'
+import type { Request, Response } from 'express'
 
 async function getUserMetrics(req: Request, res: Response) {
   // Handle fetching user metrics logic here

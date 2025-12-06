@@ -1,10 +1,10 @@
-import { Request, Response } from 'express'
-import registerPayload from '../models/registerPayload'
-import { prisma } from '../config/prisma'
-import { hashPassword } from '../utils/auth.utils'
-import loginPayloadSchema from '../models/loginPayload'
-import { createToken } from '../services/jwt'
-import userSchema from '../models/user'
+import type { Request, Response } from 'express'
+import registerPayload from '../models/registerPayload.ts'
+import { prisma } from '../config/prisma.ts'
+import { hashPassword } from '../utils/auth.utils.ts'
+import loginPayloadSchema from '../models/loginPayload.ts'
+import { createToken } from '../services/jwt.ts'
+import userSchema from '../models/user.ts'
 
 async function registerUser(req: Request, res: Response) {
   const parsedPayload = registerPayload.parse(req.body)

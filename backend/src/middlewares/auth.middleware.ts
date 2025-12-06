@@ -1,6 +1,6 @@
-import { Request, Response, NextFunction } from 'express'
+import type { Request, Response, NextFunction } from 'express'
 import jwt from 'jsonwebtoken'
-import authTokenSchema from '../models/authToken'
+import authTokenSchema from '../models/authToken.ts'
 
 const SECRET_KEY = process.env.JWT_SECRET || 'your_secret_key'
 

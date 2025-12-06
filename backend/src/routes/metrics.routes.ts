@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import metricsController from '../controllers/metrics.controller'
+import metricsController from '../controllers/metrics.controller.ts'
 
 const router = Router()
 

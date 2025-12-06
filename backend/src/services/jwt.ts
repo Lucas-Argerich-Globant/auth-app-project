@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken'
-import authTokenSchema from '../models/authToken'
-import { User } from '../models/user'
+import authTokenSchema from '../models/authToken.ts'
+import type { User } from '../models/user.ts'
 
 const SECRET_KEY = process.env.JWT_SECRET || 'your_secret_key'
 

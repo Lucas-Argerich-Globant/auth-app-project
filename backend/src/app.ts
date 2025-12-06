@@ -1,8 +1,8 @@
 import express from 'express'
-import authRoutes from './routes/auth.routes'
-import metricsRoutes from './routes/metrics.routes'
-import errorMiddleware from './middlewares/error.middleware'
-import { auth } from './middlewares/auth.middleware'
+import authRoutes from './routes/auth.routes.ts'
+import metricsRoutes from './routes/metrics.routes.ts'
+import errorMiddleware from './middlewares/error.middleware.ts'
+import { auth } from './middlewares/auth.middleware.ts'
 
 const app = express()
 

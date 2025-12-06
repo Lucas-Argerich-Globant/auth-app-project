@@ -1,4 +1,4 @@
-import { Request, Response } from 'express'
+import type { Request, Response } from 'express'
 
 export default function errorMiddleware(err: Error, _req: Request, res: Response) {
   console.error('Error:', err)
