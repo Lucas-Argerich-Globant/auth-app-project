@@ -14,4 +14,11 @@ function createToken(user: User, daysToExpire: number): string {
   return token
 }
 
-export { createToken }
+function decodeToken(token: string) {
+  const decoded = jwt.verify(token, SECRET_KEY)
+
+  const authPayload = authTokenSchema.parse(decoded)
+  return authPayload
+}
+
+export { createToken, decodeToken }
