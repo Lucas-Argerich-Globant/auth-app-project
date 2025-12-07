@@ -7,21 +7,26 @@ import { createToken } from '../services/jwt.ts'
 import userSchema from '../models/user.ts'
 
 async function registerUser(req: Request, res: Response) {
+  // Validate and parse the incoming registration payload
   const parsedPayload = registerPayload.parse(req.body)
 
+  // Check if a user with the same email already exists
   const exists = await prisma.user.findFirst({
     where: { email: parsedPayload.email },
   })
 
   if (exists) {
+    // If user exists, return error
     return res.status(400).json({
       status: 'error',
       message: 'User with this email already exists',
     })
   }
 
+  // Hash the user's password before saving
   const hashedPassword = await hashPassword(parsedPayload.password)
 
+  // Create the new user in the database, omitting the password hash from the returned object
   const newUser = await prisma.user.create({
     data: {
       email: parsedPayload.email,
@@ -35,6 +40,7 @@ async function registerUser(req: Request, res: Response) {
     },
   })
 
+  // Parse and format the user object for the response
   const user = userSchema.parse({
     id: newUser.id,
     email: newUser.email,
@@ -45,8 +51,10 @@ async function registerUser(req: Request, res: Response) {
     updatedAt: newUser.updated_at,
   })
 
+  // Create a JWT token for the new user (valid for 7 days)
   const token = createToken(user, 7)
 
+  // Return the user and token in the response
   return res.status(201).json({
     status: 'success',
     data: {
@@ -57,26 +65,32 @@ async function registerUser(req: Request, res: Response) {
 }
 
 async function loginUser(req: Request, res: Response) {
+  // Validate and parse the login payload
   const parsedPayload = loginPayloadSchema.parse(req.body)
 
+  // Find the user by email
   const rawUser = await prisma.user.findFirst({ where: { email: parsedPayload.email } })
 
   if (!rawUser) {
+    // If user not found, return generic error (do not reveal which field is wrong)
     return res.status(400).json({
       status: 'error',
       message: 'Invalid email or password',
     })
   }
 
+  // Compare the provided password with the stored password hash
   const isCorrectPassword = await comparePassword(parsedPayload.password, rawUser.pass_hash)
 
   if (!isCorrectPassword) {
+    // If password is incorrect, return same error as above
     return res.status(400).json({
       status: 'error',
       message: 'Invalid email or password',
     })
   }
 
+  // Parse and format the user object for the response
   const user = userSchema.parse({
     id: rawUser.id,
     email: rawUser.email,
@@ -87,8 +101,10 @@ async function loginUser(req: Request, res: Response) {
     updatedAt: rawUser.updated_at,
   })
 
+  // Create a JWT token for the user (valid for 7 days)
   const token = createToken(user, 7)
 
+  // Return the user and token in the response
   return res.status(200).json({
     status: 'success',
     data: {
@@ -99,6 +115,7 @@ async function loginUser(req: Request, res: Response) {
 }
 
 async function getUser(req: Request, res: Response) {
+  // Find the user by their unique ID, omitting the password hash
   const rawUser = await prisma.user.findUnique({
     where: { id: req.user!.id },
     omit: {
@@ -114,6 +131,7 @@ async function getUser(req: Request, res: Response) {
     })
   }
 
+  // Parse and format the user object for the response
   const user = userSchema.parse({
     id: rawUser.id,
     email: rawUser.email,
@@ -124,6 +142,7 @@ async function getUser(req: Request, res: Response) {
     updatedAt: rawUser.updated_at,
   })
 
+  // Return the user data
   return res.status(200).json({
     status: 'success',
     data: {
@@ -132,4 +151,5 @@ async function getUser(req: Request, res: Response) {
   })
 }
 
+// Export the controller functions for use in routes
 export default { registerUser, loginUser, getUser }
