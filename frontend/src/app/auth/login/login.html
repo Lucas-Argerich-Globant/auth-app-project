@@ -1,0 +1,22 @@
+<form
+  class="max-w-md mx-auto mt-10 px-4 pt-8 pb-16 rounded border border-gray-300 flex flex-col gap-4"
+  [formGroup]="loginForm"
+  (submit)="onSubmit()"
+>
+  <app-input name="email" label="Email" type="email" placeholder="Enter your email" [control]="getControl('email')" />
+  <app-input
+    name="password"
+    label="Password"
+    type="password"
+    placeholder="Enter your password"
+    [control]="getControl('password')"
+  />
+  <span class="text-red-600 text-sm">{{ errorMessage() }}</span>
+  <button
+    class="bg-blue-500 disabled:bg-blue-200 text-white py-2 px-4 rounded not-disabled:cursor-pointer hover:not-disabled:bg-blue-600 transition-colors"
+    type="submit"
+    [disabled]="loginForm.invalid || isSubmitting()"
+  >
+    Login
+  </button>
+</form>

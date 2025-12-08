@@ -1,11 +1,9 @@
-import { Component } from "@angular/core";
-import { RouterOutlet } from "@angular/router";
+import { Component } from '@angular/core'
+import { RouterOutlet } from '@angular/router'
 
 @Component({
-    selector: 'app-auth',
-    imports: [RouterOutlet],
-    templateUrl: './auth.html',
+  selector: 'app-auth',
+  imports: [RouterOutlet],
+  templateUrl: './auth.html'
 })
-export class AuthComponent {
-    
-}
+export class AuthComponent {}
