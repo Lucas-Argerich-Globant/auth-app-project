@@ -37,7 +37,7 @@ export class AuthService {
         this._user.set(response.data.user)
         this._token.set(response.data.token)
       }),
-      map((response) => response.status === 'error' ? response.message : null),
+      map((response) => (response.status === 'error' ? response.message : null)),
       catchError((error) => {
         this._authStatus.set('unauthenticated')
         this._user.set(null)
@@ -46,5 +46,33 @@ export class AuthService {
         return of(error.error.message)
       })
     )
+  }
+
+  register(email: string, password: string, name: { first: string; middle?: string; last: string }) {
+    return this.http
+      .post<AuthResponseData>(`${api_url}/auth/register`, {
+        firstName: name.first,
+        middleName: name.middle,
+        lastName: name.last,
+        email,
+        password
+      })
+      .pipe(
+        tap((response) => {
+          if (response.status === 'error') {
+            throw new Error(response.message)
+          }
+          this._authStatus.set('authenticated')
+          this._user.set(response.data.user)
+          this._token.set(response.data.token)
+        }),
+        map((response) => (response.status === 'error' ? response.message : null)),
+        catchError((error) => {
+          this._authStatus.set('unauthenticated')
+          this._user.set(null)
+          this._token.set(null)
+          return of(error.error.message)
+        })
+      )
   }
 }
