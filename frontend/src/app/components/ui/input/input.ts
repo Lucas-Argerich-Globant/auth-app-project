@@ -1,5 +1,5 @@
 import { Component, input } from '@angular/core'
-import { FormControl, ReactiveFormsModule } from '@angular/forms'
+import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms'
 
 @Component({
   selector: 'app-input',
@@ -15,6 +15,10 @@ export class InputComponent {
 
   hasError() {
     return this.control().invalid && this.control().touched
+  }
+
+  required() {
+    return this.control().hasValidator(Validators.required)
   }
 
   errorMessage() {
