@@ -37,13 +37,13 @@ export class AuthService {
         this._user.set(response.data.user)
         this._token.set(response.data.token)
       }),
-      map((response) => response.status === 'success'),
+      map((response) => response.status === 'error' ? response.message : null),
       catchError((error) => {
         this._authStatus.set('unauthenticated')
         this._user.set(null)
         this._token.set(null)
 
-        return of(false)
+        return of(error.error.message)
       })
     )
   }
