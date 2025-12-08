@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http'
 import { computed, effect, inject, Injectable, signal } from '@angular/core'
 import { catchError, map, of, tap } from 'rxjs'
-import { AuthResponseData, AuthStatus, User } from './types'
+import { AuthResponseData, AuthStatus, User } from '../types/auth'
 
 const api_url = 'http://localhost:3000/api'
 
