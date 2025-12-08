@@ -1,0 +1,16 @@
+<div class="flex flex-col gap-1">
+  @if (label()) {
+  <label [for]="name()" class="ml-1">{{ label() }}</label>
+  }
+  <input
+    class="border border-gray-300 rounded px-2 py-1"
+    [formControl]="control()"
+    [id]="name()"
+    [name]="name()"
+    [type]="type()"
+    [placeholder]="placeholder()"
+  />
+  @if (hasError()) {
+  <span class="text-red-600 text-sm">{{ errorMessage() }}</span>
+  }
+</div>
