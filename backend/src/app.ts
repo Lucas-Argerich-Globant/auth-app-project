@@ -1,4 +1,5 @@
 import express from 'express'
+import cors from 'cors'
 import authRoutes from './routes/auth.routes.ts'
 import metricsRoutes from './routes/metrics.routes.ts'
 import errorMiddleware from './middlewares/error.middleware.ts'
@@ -7,6 +8,7 @@ import { auth } from './middlewares/auth.middleware.ts'
 const app = express()
 
 app.use(express.json())
+app.use(cors())
 
 app.use(auth)
 
