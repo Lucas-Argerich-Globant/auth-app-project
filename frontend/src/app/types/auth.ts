@@ -25,6 +25,3 @@ export type AuthResponseData = ApiResponse<{
   token: string
 }>
 
-export type GetUserResponseData = ApiResponse<{
-  user: User
-}>

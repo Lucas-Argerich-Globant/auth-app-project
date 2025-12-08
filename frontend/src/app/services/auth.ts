@@ -17,34 +17,23 @@ export class AuthService {
   user = computed(() => this._user())
   token = computed(() => this._token())
 
-  private storageEffect = effect(() => {
-    const token = this._token()
-    if (token) {
-      cookieStore.set('auth_token', token)
-    } else {
-      cookieStore.delete('auth_token')
-    }
-  })
+  constructor() {
+    this.checkLocalSession().subscribe()
+
+    effect(() => {
+      const token = this._token()
+      if (token) {
+        localStorage.setItem('auth_token', token)
+      } else {
+        localStorage.removeItem('auth_token')
+      }
+    })
+  }
 
   login(email: string, password: string) {
     return this.http.post<AuthResponseData>(`${api_url}/auth/login`, { email, password }).pipe(
-      tap((response) => {
-        if (response.status === 'error') {
-          throw new Error(response.message)
-        }
-
-        this._authStatus.set('authenticated')
-        this._user.set(response.data.user)
-        this._token.set(response.data.token)
-      }),
-      map((response) => (response.status === 'error' ? response.message : null)),
-      catchError((error) => {
-        this._authStatus.set('unauthenticated')
-        this._user.set(null)
-        this._token.set(null)
-
-        return of(error.error.message)
-      })
+      map((res) => this.handleAuthSuccess(res)),
+      catchError((err) => this.handleAuthError(err))
     )
   }
 
@@ -58,21 +47,50 @@ export class AuthService {
         password
       })
       .pipe(
-        tap((response) => {
-          if (response.status === 'error') {
-            throw new Error(response.message)
-          }
-          this._authStatus.set('authenticated')
-          this._user.set(response.data.user)
-          this._token.set(response.data.token)
-        }),
-        map((response) => (response.status === 'error' ? response.message : null)),
-        catchError((error) => {
-          this._authStatus.set('unauthenticated')
-          this._user.set(null)
-          this._token.set(null)
-          return of(error.error.message)
-        })
+        map((res) => this.handleAuthSuccess(res)),
+        catchError((err) => this.handleAuthError(err))
       )
+  }
+
+  logout() {
+    this._authStatus.set('unauthenticated')
+    this._token.set(null)
+    this._user.set(null)
+  }
+
+  private checkLocalSession() {
+    const token = localStorage.getItem('auth_token')
+
+    if (!token) {
+      this.logout()
+      return of(null)
+    }
+
+    return this.http
+      .get<AuthResponseData>(`${api_url}/auth/me`, {
+        headers: {
+          authorization: `Bearer ${token}`
+        }
+      })
+      .pipe(
+        map((res) => this.handleAuthSuccess(res)),
+        catchError((err) => this.handleAuthError(err))
+      )
+  }
+
+  private handleAuthSuccess(response: AuthResponseData) {
+    if (response.status === 'error') {
+      return response.message
+    }
+    this._authStatus.set('authenticated')
+    this._user.set(response.data.user)
+    this._token.set(response.data.token)
+    localStorage.setItem('auth_token', response.data.token)
+    return null
+  }
+
+  private handleAuthError(error: any) {
+    this.logout()
+    return of(error.error.message as string)
   }
 }
