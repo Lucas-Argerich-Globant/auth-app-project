@@ -142,11 +142,15 @@ async function getUser(req: Request, res: Response) {
     updatedAt: rawUser.updated_at,
   })
 
+  // Re-use same token, exp should only reset with login
+  const token = req.headers.authorization!.split(' ')[1]
+
   // Return the user data
   return res.status(200).json({
     status: 'success',
     data: {
       user,
+      token
     },
   })
 }
