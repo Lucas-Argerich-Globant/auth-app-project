@@ -1,7 +1,8 @@
-import { HttpClient } from '@angular/common/http'
+import { HttpClient, HttpContext } from '@angular/common/http'
 import { computed, effect, inject, Injectable, signal } from '@angular/core'
 import { catchError, map, of, tap } from 'rxjs'
 import { AuthResponseData, AuthStatus, User } from '../types/auth'
+import { AUTH_INTERCEPTOR_DISABLED } from '../interceptors/auth'
 
 const api_url = 'http://localhost:3000/api'
 
@@ -68,9 +69,8 @@ export class AuthService {
 
     return this.http
       .get<AuthResponseData>(`${api_url}/auth/me`, {
-        headers: {
-          authorization: `Bearer ${token}`
-        }
+        context: new HttpContext().set(AUTH_INTERCEPTOR_DISABLED, true),
+        headers: { authorization: `Bearer ${token}` }
       })
       .pipe(
         map((res) => this.handleAuthSuccess(res)),
@@ -91,6 +91,7 @@ export class AuthService {
 
   private handleAuthError(error: any) {
     this.logout()
-    return of(error.error.message as string)
+    console.log(error)
+    return of(error?.error?.message ?? error)
   }
 }
