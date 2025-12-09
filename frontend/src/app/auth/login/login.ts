@@ -1,7 +1,7 @@
 import { Component, inject, signal } from '@angular/core'
-import { InputComponent } from '../../components/ui/input/input'
+import { InputComponent } from '../../shared/ui/input/input'
 import { FormBuilder, FormControl, ReactiveFormsModule, Validators } from '@angular/forms'
-import { AuthService } from '../../services/auth'
+import { AuthService } from '../auth-store'
 
 @Component({
   templateUrl: './login.html',
@@ -16,8 +16,6 @@ export class LoginComponent {
   protected loginForm = this.formBuilder.group({
     email: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required]]
-    // Validators for register:
-    //password: ['', [Validators.required, Validators.minLength(8), Validators.pattern(/^(?=.*[0-9]).{8,}$/)]]
   })
 
   protected getControl(controlName: keyof typeof this.loginForm.controls): FormControl {

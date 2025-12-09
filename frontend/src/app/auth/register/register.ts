@@ -1,7 +1,7 @@
 import { Component, inject, signal } from '@angular/core'
-import { InputComponent } from '../../components/ui/input/input'
+import { InputComponent } from '../../shared/ui/input/input'
 import { AbstractControl, FormBuilder, FormControl, ReactiveFormsModule, ValidatorFn, Validators } from '@angular/forms'
-import { AuthService } from '../../services/auth'
+import { AuthService } from '../auth-store'
 import { FormControlName } from '../../types/generics'
 
 @Component({

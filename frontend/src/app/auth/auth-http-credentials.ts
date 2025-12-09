@@ -1,5 +1,5 @@
 import { HttpContextToken, HttpHandlerFn, HttpRequest } from "@angular/common/http"
-import { AuthService } from "../services/auth"
+import { AuthService } from "./auth-store"
 import { inject } from "@angular/core"
 
 export const AUTH_INTERCEPTOR_DISABLED = new HttpContextToken<boolean>(() => true);
