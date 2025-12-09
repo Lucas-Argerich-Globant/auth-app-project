@@ -1,14 +1,14 @@
 import { Component, inject, signal } from '@angular/core'
 import { InputComponent } from '../../shared/ui/input/input'
 import { FormBuilder, FormControl, ReactiveFormsModule, Validators } from '@angular/forms'
-import { AuthService } from '../auth-store'
+import { AuthStore } from '../auth-store'
 
 @Component({
   templateUrl: './login.html',
   imports: [InputComponent, ReactiveFormsModule]
 })
 export class LoginComponent {
-  private authService = inject(AuthService)
+  private authService = inject(AuthStore)
   private formBuilder = new FormBuilder()
   protected isSubmitting = signal(false)
   protected errorMessage = signal<string | null>(null)

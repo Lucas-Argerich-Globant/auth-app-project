@@ -2,12 +2,12 @@ import { HttpClient, HttpContext } from '@angular/common/http'
 import { computed, effect, inject, Injectable, signal } from '@angular/core'
 import { catchError, map, of, tap } from 'rxjs'
 import { AuthResponseData, AuthStatus, User } from './auth-types'
-import { AUTH_INTERCEPTOR_DISABLED } from './auth-http-credentials'
+import { AUTH_HTTP_CREDENTIALS_INTERCEPTOR_DISABLED } from './auth-http-credentials'
 
 const api_url = 'http://localhost:3000/api'
 
 @Injectable({ providedIn: 'root' })
-export class AuthService {
+export class AuthStore {
   private _authStatus = signal<AuthStatus>('pending')
   private _user = signal<User | null>(null)
   private _token = signal<string | null>(null)
@@ -69,7 +69,7 @@ export class AuthService {
 
     return this.http
       .get<AuthResponseData>(`${api_url}/auth/me`, {
-        context: new HttpContext().set(AUTH_INTERCEPTOR_DISABLED, true),
+        context: new HttpContext().set(AUTH_HTTP_CREDENTIALS_INTERCEPTOR_DISABLED, true),
         headers: { authorization: `Bearer ${token}` }
       })
       .pipe(
