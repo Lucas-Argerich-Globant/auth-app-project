@@ -6,6 +6,7 @@ export const routes: Routes = [
   {
     path: 'auth',
     component: AuthComponent,
+    canMatch: [UnAuthenticatedRequired],
     loadChildren: () => import('./auth/auth-routes')
   }
 ]
