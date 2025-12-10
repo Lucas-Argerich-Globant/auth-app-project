@@ -1,1 +1,18 @@
+<header class="border-b border-gray-300 px-8 py-4">
+  <nav class="flex justify-between">
+    <a routerLink="dashboard" routerLinkActive="font-bold">Dashboard</a>
+    @switch (authStore.authStatus()) {
+      @case ('unauthenticated') {
+        <div class="flex gap-4">
+          <a routerLink="auth/register" routerLinkActive="font-bold">Register</a>
+          <a routerLink="auth/login" routerLinkActive="font-bold">Login</a>
+        </div>
+      }
+      @case ('authenticated') {
+        <button (click)="logout()" class="cursor-pointer">Logout</button>
+      }
+    }
+  </nav>
+</header>
+
 <router-outlet />
