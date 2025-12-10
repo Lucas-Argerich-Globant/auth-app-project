@@ -2,12 +2,14 @@ import { Component, inject, signal } from '@angular/core'
 import { InputComponent } from '../../shared/ui/input/input'
 import { FormBuilder, FormControl, ReactiveFormsModule, Validators } from '@angular/forms'
 import { AuthStore } from '../auth-store'
+import { Router } from '@angular/router'
 
 @Component({
   templateUrl: './login.html',
   imports: [InputComponent, ReactiveFormsModule]
 })
 export class LoginComponent {
+  private router = inject(Router)
   private authStore = inject(AuthStore)
   private formBuilder = new FormBuilder()
   protected isSubmitting = signal(false)
@@ -34,6 +36,7 @@ export class LoginComponent {
     this.authStore.login(formData.email!, formData.password!).subscribe(({ error }) => {
       this.errorMessage.set(error)
       this.isSubmitting.set(false)
+      this.router.navigateByUrl('/')
     })
   }
 }

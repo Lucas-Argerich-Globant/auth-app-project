@@ -3,12 +3,14 @@ import { InputComponent } from '../../shared/ui/input/input'
 import { AbstractControl, FormBuilder, FormControl, ReactiveFormsModule, ValidatorFn, Validators } from '@angular/forms'
 import { AuthStore } from '../auth-store'
 import { FormControlName } from '../../types/generics'
+import { Router } from '@angular/router'
 
 @Component({
   templateUrl: './register.html',
   imports: [InputComponent, ReactiveFormsModule]
 })
 export class RegisterComponent {
+  private router = inject(Router)
   private authStore = inject(AuthStore)
   private formBuilder = new FormBuilder()
   protected isSubmitting = signal(false)
@@ -70,6 +72,7 @@ export class RegisterComponent {
       .subscribe(({ error }) => {
         this.errorMessage.set(error)
         this.isSubmitting.set(false)
+        this.router.navigateByUrl('/')
       })
   }
 }
