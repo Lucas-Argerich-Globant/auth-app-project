@@ -2,7 +2,7 @@ import { HttpContextToken, HttpHandlerFn, HttpRequest } from "@angular/common/ht
 import { AuthStore } from "./auth-store"
 import { inject } from "@angular/core"
 
-export const AUTH_HTTP_CREDENTIALS_INTERCEPTOR_DISABLED = new HttpContextToken<boolean>(() => true);
+export const AUTH_HTTP_CREDENTIALS_INTERCEPTOR_DISABLED = new HttpContextToken<boolean>(() => false);
 
 export function authHttpCredentials(req: HttpRequest<unknown>, next: HttpHandlerFn) {
   if (req.context.get(AUTH_HTTP_CREDENTIALS_INTERCEPTOR_DISABLED)) {
@@ -10,7 +10,6 @@ export function authHttpCredentials(req: HttpRequest<unknown>, next: HttpHandler
   }
 
   const token = inject(AuthStore).token()
-  console.log(token)
 
   if (!token) {
     return next(req)
