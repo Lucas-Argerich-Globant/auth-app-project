@@ -5,6 +5,7 @@ import { AuthComponent } from './auth'
 
 export const routes: Routes = [
   {
+    path: '',
     component: AuthComponent,
     children: [
       {

@@ -5,8 +5,13 @@ import { firstValueFrom } from 'rxjs'
 
 export const AuthenticatedRequired: CanMatchFn = async (route: Route, segments: UrlSegment[]) => {
   const authStore = inject(AuthStore)
+  const router = inject(Router)
 
   const { isAuthenticated } = await firstValueFrom(authStore.checkLocalSession())
+  
+  if (!isAuthenticated) {
+    router.navigateByUrl('/auth/login')
+  }
 
   return isAuthenticated
 }
