@@ -67,12 +67,14 @@ export class RegisterComponent {
       repeatPassword: string
     }
 
-    this.authStore
-      .register(formData.email, formData.password, formData.name)
-      .subscribe(({ error }) => {
+    this.authStore.register(formData.email, formData.password, formData.name).subscribe(({ error }) => {
+      if (error) {
         this.errorMessage.set(error)
         this.isSubmitting.set(false)
-        this.router.navigateByUrl('/')
-      })
+        return
+      }
+
+      this.router.navigateByUrl('/')
+    })
   }
 }

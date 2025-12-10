@@ -34,8 +34,12 @@ export class LoginComponent {
     const formData = this.loginForm.value
 
     this.authStore.login(formData.email!, formData.password!).subscribe(({ error }) => {
-      this.errorMessage.set(error)
-      this.isSubmitting.set(false)
+      if (error) {
+        this.errorMessage.set(error)
+        this.isSubmitting.set(false)
+        return
+      }
+
       this.router.navigateByUrl('/')
     })
   }
