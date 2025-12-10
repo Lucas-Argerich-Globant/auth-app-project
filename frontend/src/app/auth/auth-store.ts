@@ -1,7 +1,7 @@
 import { HttpClient, HttpContext } from '@angular/common/http'
 import { computed, effect, inject, Injectable, signal } from '@angular/core'
-import { catchError, map, of, tap } from 'rxjs'
-import { AuthResponseData, AuthStatus, User } from './auth-types'
+import { catchError, map, Observable, of, tap } from 'rxjs'
+import { AuthResponseData, AuthStatus, AuthStoreResult, User } from './auth-types'
 import { AUTH_HTTP_CREDENTIALS_INTERCEPTOR_DISABLED } from './auth-http-credentials'
 
 const api_url = 'http://localhost:3000/api'
@@ -31,14 +31,18 @@ export class AuthStore {
     })
   }
 
-  login(email: string, password: string) {
+  login(email: string, password: string): Observable<AuthStoreResult> {
     return this.http.post<AuthResponseData>(`${api_url}/auth/login`, { email, password }).pipe(
       map((res) => this.handleAuthSuccess(res)),
       catchError((err) => this.handleAuthError(err))
     )
   }
 
-  register(email: string, password: string, name: { first: string; middle?: string; last: string }) {
+  register(
+    email: string,
+    password: string,
+    name: { first: string; middle?: string; last: string }
+  ): Observable<AuthStoreResult> {
     return this.http
       .post<AuthResponseData>(`${api_url}/auth/register`, {
         firstName: name.first,
@@ -59,16 +63,17 @@ export class AuthStore {
     this._user.set(null)
   }
 
-  private checkLocalSession() {
+  checkLocalSession() {
     const token = localStorage.getItem('auth_token')
 
     if (!token) {
       this.logout()
-      return of(null)
+      return of({ isAuthenticated: false, error: null })
     }
 
     return this.http
       .get<AuthResponseData>(`${api_url}/auth/me`, {
+        // Avoid Circular dependency
         context: new HttpContext().set(AUTH_HTTP_CREDENTIALS_INTERCEPTOR_DISABLED, true),
         headers: { authorization: `Bearer ${token}` }
       })
@@ -78,20 +83,20 @@ export class AuthStore {
       )
   }
 
-  private handleAuthSuccess(response: AuthResponseData) {
+  private handleAuthSuccess(response: AuthResponseData): AuthStoreResult {
     if (response.status === 'error') {
-      return response.message
+      return { isAuthenticated: false, error: response.message }
     }
     this._authStatus.set('authenticated')
     this._user.set(response.data.user)
     this._token.set(response.data.token)
-    localStorage.setItem('auth_token', response.data.token)
-    return null
+
+    return { isAuthenticated: true, error: null }
   }
 
-  private handleAuthError(error: any) {
+  private handleAuthError(error: any): Observable<AuthStoreResult> {
     this.logout()
-    console.log(error)
-    return of(error?.error?.message ?? error)
+
+    return of({ isAuthenticated: false, error: error?.error?.message ?? error })
   }
 }

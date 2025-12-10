@@ -8,7 +8,7 @@ import { AuthStore } from '../auth-store'
   imports: [InputComponent, ReactiveFormsModule]
 })
 export class LoginComponent {
-  private authService = inject(AuthStore)
+  private authStore = inject(AuthStore)
   private formBuilder = new FormBuilder()
   protected isSubmitting = signal(false)
   protected errorMessage = signal<string | null>(null)
@@ -31,8 +31,8 @@ export class LoginComponent {
 
     const formData = this.loginForm.value
 
-    this.authService.login(formData.email!, formData.password!).subscribe((message) => {
-      this.errorMessage.set(message)
+    this.authStore.login(formData.email!, formData.password!).subscribe(({ error }) => {
+      this.errorMessage.set(error)
       this.isSubmitting.set(false)
     })
   }

@@ -25,3 +25,4 @@ export type AuthResponseData = ApiResponse<{
   token: string
 }>
 
+export type AuthStoreResult = { isAuthenticated: boolean; error: null } | { isAuthenticated: false; error: string }

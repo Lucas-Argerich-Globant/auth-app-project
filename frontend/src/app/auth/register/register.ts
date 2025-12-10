@@ -9,7 +9,7 @@ import { FormControlName } from '../../types/generics'
   imports: [InputComponent, ReactiveFormsModule]
 })
 export class RegisterComponent {
-  private authService = inject(AuthStore)
+  private authStore = inject(AuthStore)
   private formBuilder = new FormBuilder()
   protected isSubmitting = signal(false)
   protected errorMessage = signal<string | null>(null)
@@ -65,9 +65,11 @@ export class RegisterComponent {
       repeatPassword: string
     }
 
-    this.authService.register(formData.email, formData.password, formData.name).subscribe((message) => {
-      this.errorMessage.set(message)
-      this.isSubmitting.set(false)
-    })
+    this.authStore
+      .register(formData.email, formData.password, formData.name)
+      .subscribe(({ error }) => {
+        this.errorMessage.set(error)
+        this.isSubmitting.set(false)
+      })
   }
 }
