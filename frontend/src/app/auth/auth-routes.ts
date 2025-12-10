@@ -1,21 +1,27 @@
 import { Routes } from '@angular/router'
 import { RegisterComponent } from './register/register'
 import { LoginComponent } from './login/login'
+import { AuthComponent } from './auth'
 
 export const routes: Routes = [
   {
-    path: 'register',
-    component: RegisterComponent,
-    title: 'Register'
-  },
-  {
-    path: 'login',
-    component: LoginComponent,
-    title: 'Login'
-  },
-  {
-    path: '**',
-    redirectTo: 'login'
+    component: AuthComponent,
+    children: [
+      {
+        path: 'register',
+        component: RegisterComponent,
+        title: 'Register'
+      },
+      {
+        path: 'login',
+        component: LoginComponent,
+        title: 'Login'
+      },
+      {
+        path: '**',
+        redirectTo: 'login'
+      }
+    ]
   }
 ]
 
