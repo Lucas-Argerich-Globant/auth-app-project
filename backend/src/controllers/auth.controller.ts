@@ -12,14 +12,14 @@ async function registerUser(req: Request, res: Response) {
 
   // Check if a user with the same email already exists
   const exists = await prisma.user.findFirst({
-    where: { email: parsedPayload.email },
+    where: { email: parsedPayload.email }
   })
 
   if (exists) {
     // If user exists, return error
     return res.status(400).json({
       status: 'error',
-      message: 'User with this email already exists',
+      message: 'User with this email already exists'
     })
   }
 
@@ -33,11 +33,11 @@ async function registerUser(req: Request, res: Response) {
       pass_hash: hashedPassword,
       first_name: parsedPayload.firstName,
       middle_name: parsedPayload.middleName,
-      last_name: parsedPayload.lastName,
+      last_name: parsedPayload.lastName
     },
     omit: {
-      pass_hash: true,
-    },
+      pass_hash: true
+    }
   })
 
   // Parse and format the user object for the response
@@ -47,8 +47,9 @@ async function registerUser(req: Request, res: Response) {
     firstName: newUser.first_name,
     middleName: newUser.middle_name,
     lastName: newUser.last_name,
+    role: newUser.role,
     createdAt: newUser.created_at,
-    updatedAt: newUser.updated_at,
+    updatedAt: newUser.updated_at
   })
 
   // Create a JWT token for the new user (valid for 7 days)
@@ -59,8 +60,8 @@ async function registerUser(req: Request, res: Response) {
     status: 'success',
     data: {
       user,
-      token,
-    },
+      token
+    }
   })
 }
 
@@ -121,6 +122,7 @@ async function loginUser(req: Request, res: Response) {
     firstName: rawUser.first_name,
     middleName: rawUser.middle_name,
     lastName: rawUser.last_name,
+    role: rawUser.role,
     createdAt: rawUser.created_at,
     updatedAt: rawUser.updated_at
   })
@@ -143,15 +145,15 @@ async function getUser(req: Request, res: Response) {
   const rawUser = await prisma.user.findUnique({
     where: { id: req.user!.id },
     omit: {
-      pass_hash: true,
-    },
+      pass_hash: true
+    }
   })
 
   // This check is mostly redundant due to requireAuth middleware
   if (!rawUser) {
     return res.status(404).json({
       status: 'error',
-      message: 'User not found',
+      message: 'User not found'
     })
   }
 
@@ -162,8 +164,9 @@ async function getUser(req: Request, res: Response) {
     firstName: rawUser.first_name,
     middleName: rawUser.middle_name,
     lastName: rawUser.last_name,
+    role: rawUser.role,
     createdAt: rawUser.created_at,
-    updatedAt: rawUser.updated_at,
+    updatedAt: rawUser.updated_at
   })
 
   // Re-use same token, exp should only reset with login
@@ -175,7 +178,7 @@ async function getUser(req: Request, res: Response) {
     data: {
       user,
       token
-    },
+    }
   })
 }
 
