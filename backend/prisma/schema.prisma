@@ -5,8 +5,8 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-  provider = "prisma-client"
-  output   = "../src/.generated"
+  provider            = "prisma-client"
+  output              = "../src/.generated"
   importFileExtension = "ts"
 }
 
@@ -15,13 +15,23 @@ datasource db {
 }
 
 model User {
-  id          String  @id @default(uuid())
+  id          String        @id @default(uuid())
   first_name  String
   middle_name String?
   last_name   String
-  email       String  @unique
+  email       String        @unique
   pass_hash   String
-  role        String  @default("user")
-  created_at  DateTime @default(now())
-  updated_at  DateTime @default(now())
+  role        String        @default("user")
+  created_at  DateTime      @default(now())
+  updated_at  DateTime      @default(now())
+  logins      LoginMetric[]
+}
+
+model LoginMetric {
+  id         String   @id @default(uuid())
+  user_id    String?
+  success    Boolean
+  error      String?
+  created_at DateTime @default(now())
+  user       User?    @relation(fields: [user_id], references: [id])
 }

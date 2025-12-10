@@ -73,9 +73,17 @@ async function loginUser(req: Request, res: Response) {
 
   if (!rawUser) {
     // If user not found, return generic error (do not reveal which field is wrong)
+
+    prisma.loginMetric.create({
+      data: {
+        success: false,
+        error: 'EMAIL_ACCOUNT_NOT_FOUND'
+      }
+    })
+
     return res.status(400).json({
       status: 'error',
-      message: 'Invalid email or password',
+      message: 'Invalid email or password'
     })
   }
 
@@ -84,11 +92,27 @@ async function loginUser(req: Request, res: Response) {
 
   if (!isCorrectPassword) {
     // If password is incorrect, return same error as above
+
+    prisma.loginMetric.create({
+      data: {
+        success: false,
+        error: 'INCORRECT_PASSWORD',
+        user_id: rawUser.id
+      }
+    })
+
     return res.status(400).json({
       status: 'error',
-      message: 'Invalid email or password',
+      message: 'Invalid email or password'
     })
   }
+
+  prisma.loginMetric.create({
+    data: {
+      success: true,
+      user_id: rawUser.id
+    }
+  })
 
   // Parse and format the user object for the response
   const user = userSchema.parse({
@@ -98,7 +122,7 @@ async function loginUser(req: Request, res: Response) {
     middleName: rawUser.middle_name,
     lastName: rawUser.last_name,
     createdAt: rawUser.created_at,
-    updatedAt: rawUser.updated_at,
+    updatedAt: rawUser.updated_at
   })
 
   // Create a JWT token for the user (valid for 7 days)
@@ -109,8 +133,8 @@ async function loginUser(req: Request, res: Response) {
     status: 'success',
     data: {
       user,
-      token,
-    },
+      token
+    }
   })
 }
 
