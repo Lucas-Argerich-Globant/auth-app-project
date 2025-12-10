@@ -12,18 +12,27 @@ type ConvertObjectKeysToCamelCase<T> = {
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type KeyedObject = Record<string, any>
-type Convertible = KeyedObject | KeyedObject[] | string | number | boolean | null | undefined
+type Convertible = KeyedObject | KeyedObject[] | Date | string | number | boolean | null | undefined 
 
 export function objectSnakeToCamelCase<T extends Convertible>(obj: T): ConvertObjectKeysToCamelCase<T> {
+  // 1. Initial Primitives/Null Check
   if (typeof obj !== 'object' || obj === null) {
     return obj as ConvertObjectKeysToCamelCase<T>
   }
 
+  // 2. NEW: Date Object Check (Must come before Array and plain Object handling)
+  if (obj instanceof Date) {
+    // Return the Date object untouched.
+    return obj as ConvertObjectKeysToCamelCase<T>
+  }
+
+  // 3. Array Check (Must come after Date check, as Array.isArray(date) is false)
   if (Array.isArray(obj)) {
     const newArray = obj.map((item) => objectSnakeToCamelCase(item))
     return newArray as ConvertObjectKeysToCamelCase<T>
   }
 
+  // 4. Object Key Iteration (Only executes for plain objects now)
   const newObj: KeyedObject = {}
   const sourceObj = obj as KeyedObject
 
@@ -33,6 +42,7 @@ export function objectSnakeToCamelCase<T extends Convertible>(obj: T): ConvertOb
 
       const value = sourceObj[key]
 
+      // Recursive call for nested objects (which will now correctly handle nested Dates)
       if (typeof value === 'object' && value !== null) {
         newObj[camelKey] = objectSnakeToCamelCase(value)
       } else {
