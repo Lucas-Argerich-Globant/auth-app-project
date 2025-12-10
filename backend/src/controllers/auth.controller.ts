@@ -5,6 +5,7 @@ import { comparePassword, hashPassword } from '../utils/auth.utils.ts'
 import loginPayloadSchema from '../models/loginPayload.ts'
 import { createToken } from '../services/jwt.ts'
 import userSchema from '../models/user.ts'
+import { objectSnakeToCamelCase } from '../utils/index.ts'
 
 async function registerUser(req: Request, res: Response) {
   // Validate and parse the incoming registration payload
@@ -41,16 +42,7 @@ async function registerUser(req: Request, res: Response) {
   })
 
   // Parse and format the user object for the response
-  const user = userSchema.parse({
-    id: newUser.id,
-    email: newUser.email,
-    firstName: newUser.first_name,
-    middleName: newUser.middle_name,
-    lastName: newUser.last_name,
-    role: newUser.role,
-    createdAt: newUser.created_at,
-    updatedAt: newUser.updated_at
-  })
+  const user = userSchema.parse(objectSnakeToCamelCase(newUser))
 
   // Create a JWT token for the new user (valid for 7 days)
   const token = createToken(user, 7)
@@ -75,12 +67,14 @@ async function loginUser(req: Request, res: Response) {
   if (!rawUser) {
     // If user not found, return generic error (do not reveal which field is wrong)
 
-    prisma.loginMetric.create({
-      data: {
-        success: false,
-        error: 'EMAIL_ACCOUNT_NOT_FOUND'
-      }
-    })
+    prisma.loginMetric
+      .create({
+        data: {
+          success: false,
+          error: 'EMAIL_ACCOUNT_NOT_FOUND'
+        }
+      })
+      .then()
 
     return res.status(400).json({
       status: 'error',
@@ -94,13 +88,15 @@ async function loginUser(req: Request, res: Response) {
   if (!isCorrectPassword) {
     // If password is incorrect, return same error as above
 
-    prisma.loginMetric.create({
-      data: {
-        success: false,
-        error: 'INCORRECT_PASSWORD',
-        user_id: rawUser.id
-      }
-    })
+    prisma.loginMetric
+      .create({
+        data: {
+          success: false,
+          error: 'INCORRECT_PASSWORD',
+          user_id: rawUser.id
+        }
+      })
+      .then()
 
     return res.status(400).json({
       status: 'error',
@@ -108,24 +104,17 @@ async function loginUser(req: Request, res: Response) {
     })
   }
 
-  prisma.loginMetric.create({
-    data: {
-      success: true,
-      user_id: rawUser.id
-    }
-  })
+  prisma.loginMetric
+    .create({
+      data: {
+        success: true,
+        user_id: rawUser.id
+      }
+    })
+    .then()
 
   // Parse and format the user object for the response
-  const user = userSchema.parse({
-    id: rawUser.id,
-    email: rawUser.email,
-    firstName: rawUser.first_name,
-    middleName: rawUser.middle_name,
-    lastName: rawUser.last_name,
-    role: rawUser.role,
-    createdAt: rawUser.created_at,
-    updatedAt: rawUser.updated_at
-  })
+  const user = userSchema.parse(objectSnakeToCamelCase(rawUser))
 
   // Create a JWT token for the user (valid for 7 days)
   const token = createToken(user, 7)
@@ -158,16 +147,7 @@ async function getUser(req: Request, res: Response) {
   }
 
   // Parse and format the user object for the response
-  const user = userSchema.parse({
-    id: rawUser.id,
-    email: rawUser.email,
-    firstName: rawUser.first_name,
-    middleName: rawUser.middle_name,
-    lastName: rawUser.last_name,
-    role: rawUser.role,
-    createdAt: rawUser.created_at,
-    updatedAt: rawUser.updated_at
-  })
+  const user = userSchema.parse(objectSnakeToCamelCase(rawUser))
 
   // Re-use same token, exp should only reset with login
   const token = req.headers.authorization!.split(' ')[1]
