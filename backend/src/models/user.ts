@@ -6,6 +6,7 @@ const userSchema = z.object({
   firstName: z.string(),
   middleName: z.string().nullable(),
   lastName: z.string(),
+  role: z.enum(['user', 'admin']),
   createdAt: z.coerce.date(),
   updatedAt: z.coerce.date(),
 })

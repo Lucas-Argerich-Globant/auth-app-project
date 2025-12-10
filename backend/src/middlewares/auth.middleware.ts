@@ -1,5 +1,6 @@
 import type { Request, Response, NextFunction } from 'express'
 import { decodeToken } from '../services/jwt.ts'
+import type { User } from '../models/user.ts'
 
 export function auth(req: Request, res: Response, next: NextFunction) {
   const authHeader = req.headers.authorization
@@ -30,4 +31,13 @@ export function requireAuth(req: Request, res: Response, next: NextFunction) {
     return res.status(401).json({ status: 'error', message: 'Unauthorized' })
   }
   next()
+}
+
+export function requireRole(...roles: User['role'][]) {
+  return (req: Request, res: Response, next: NextFunction) => {
+    if (!req.user || !roles.includes(req.user.role)) {
+      return res.status(403).json({ status: 'error', message: 'Forbidden' })
+    }
+    next()
+  }
 }

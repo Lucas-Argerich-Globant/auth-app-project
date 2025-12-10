@@ -21,6 +21,7 @@ model User {
   last_name   String
   email       String  @unique
   pass_hash   String
+  role        String  @default("user")
   created_at  DateTime @default(now())
   updated_at  DateTime @default(now())
 }
