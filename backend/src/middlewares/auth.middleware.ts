@@ -1,8 +1,11 @@
 import type { Request, Response, NextFunction } from 'express'
 import { decodeToken } from '../services/jwt.ts'
 import type { User } from '../models/user.ts'
+import { prisma } from '../config/prisma.ts'
+import { objectSnakeToCamelCase } from '../utils/index.ts'
+import userSchema from '../models/user.ts'
 
-export function auth(req: Request, res: Response, next: NextFunction) {
+export async function auth(req: Request, res: Response, next: NextFunction) {
   const authHeader = req.headers.authorization
 
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
@@ -17,7 +20,8 @@ export function auth(req: Request, res: Response, next: NextFunction) {
       return res.status(401).json({ status: 'error', message: 'Token expired' })
     }
 
-    req.user = authPayload.user
+    const user = await prisma.user.findFirst({ where: { id: authPayload.user.id }})
+    req.user = userSchema.parse(objectSnakeToCamelCase(user))
 
     next()
   } catch (err) {
