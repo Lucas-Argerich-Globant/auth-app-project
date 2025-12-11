@@ -7,20 +7,20 @@ export const AuthenticatedRequired: CanMatchFn = async (route: Route, segments: 
   const authStore = inject(AuthStore)
   const router = inject(Router)
 
-  const { isAuthenticated } = await firstValueFrom(authStore.checkLocalSession())
-  
+  const isAuthenticated = await firstValueFrom(authStore.isAuthenticated)
+
   if (!isAuthenticated) {
     router.navigateByUrl('/auth/login')
   }
 
-  return isAuthenticated
+  return true
 }
 
 export const UnAuthenticatedRequired: CanMatchFn = async (route: Route, segments: UrlSegment[]) => {
   const authStore = inject(AuthStore)
   const router = inject(Router)
 
-  const { isAuthenticated } = await firstValueFrom(authStore.checkLocalSession())
+  const isAuthenticated = await firstValueFrom(authStore.isAuthenticated)
 
   if (isAuthenticated) {
     router.navigateByUrl('/')

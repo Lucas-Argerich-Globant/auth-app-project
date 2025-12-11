@@ -1,8 +1,9 @@
 import { HttpClient, HttpContext } from '@angular/common/http'
 import { computed, effect, inject, Injectable, signal } from '@angular/core'
-import { catchError, map, Observable, of, tap } from 'rxjs'
+import { catchError, filter, map, Observable, of, take, tap } from 'rxjs'
 import { AuthResponseData, AuthStatus, AuthStoreResult, User } from './auth-types'
 import { AUTH_HTTP_CREDENTIALS_INTERCEPTOR_DISABLED } from './auth-http-credentials'
+import { toObservable } from '@angular/core/rxjs-interop'
 
 const api_url = 'http://localhost:3000/api'
 
@@ -30,6 +31,12 @@ export class AuthStore {
       }
     })
   }
+
+  isAuthenticated: Observable<boolean> = toObservable(this.authStatus).pipe(
+    filter((status) => status !== 'pending'),
+    map((status) => status === 'authenticated'),
+    take(1)
+  )
 
   login(email: string, password: string): Observable<AuthStoreResult> {
     return this.http.post<AuthResponseData>(`${api_url}/auth/login`, { email, password }).pipe(
@@ -63,7 +70,7 @@ export class AuthStore {
     this._user.set(null)
   }
 
-  checkLocalSession() {
+  private checkLocalSession() {
     const token = localStorage.getItem('auth_token')
 
     if (!token) {
