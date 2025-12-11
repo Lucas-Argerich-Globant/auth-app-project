@@ -54,7 +54,7 @@ async function getAdminMetrics(req: Request, res: Response) {
         some: {
           created_at: {
             // Logged in within one week
-            lt: new Date(Date.now() - new Date(0).setHours(24 * 7))
+            gt: new Date(Date.now() - new Date(0).setHours(24 * 7))
           }
         }
       }
