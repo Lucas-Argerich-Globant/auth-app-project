@@ -1,1 +1,16 @@
-<h1>Dashboard</h1>
+<main class="p-4 md:p-8 lg:p-12 space-y-8 bg-gray-50 min-h-screen">
+  <header>
+    <h1 class="text-3xl md:text-4xl font-extrabold text-gray-900 tracking-tight">
+      👋 ¡Bienvenido de nuevo, {{user?.firstName}}!
+    </h1>
+    <p class="text-lg text-gray-500 mt-1">Resumen de tu panel de control de un vistazo.</p>
+  </header>
+
+  <section class="space-y-8">
+    <user-metrics />
+
+    @if (user?.role === 'admin') {
+    <admin-metrics />
+    }
+  </section>
+</main>

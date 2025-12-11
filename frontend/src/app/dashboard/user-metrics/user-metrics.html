@@ -1,0 +1,41 @@
+<section class="pt-6">
+  <h2 class="text-2xl font-semibold text-gray-800 mb-6">Tus Métricas Personales</h2>
+
+  @if (metrics()) {
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="bg-white p-6 shadow-lg rounded-xl border border-gray-100 transition-shadow hover:shadow-xl">
+        <div class="flex items-center justify-between">
+          <span class="text-sm font-medium text-gray-500">Último Acceso</span>
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+        </div>
+        <p class="mt-2 text-3xl font-bold text-gray-900">
+          {{metrics()!.lastLogin?.toLocaleDateString()}}
+        </p>
+      </div>
+
+      <div class="bg-white p-6 shadow-lg rounded-xl border border-gray-100 transition-shadow hover:shadow-xl">
+        <div class="flex items-center justify-between">
+          <span class="text-sm font-medium text-gray-500">Accesos Exitosos</span>
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+        </div>
+        <p class="mt-2 text-3xl font-bold text-gray-900">
+          {{metrics()!.logins.successful}}
+        </p>
+      </div>
+
+      <div class="bg-white p-6 shadow-lg rounded-xl border border-gray-100 transition-shadow hover:shadow-xl">
+        <div class="flex items-center justify-between">
+          <span class="text-sm font-medium text-gray-500">Accesos Fallidos</span>
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+        </div>
+        <p class="mt-2 text-3xl font-bold text-gray-900">
+          {{metrics()!.logins.unsuccessful}}
+        </p>
+      </div>
+    </div>
+  } @else {
+    <div class="p-6 bg-white rounded-xl shadow-md text-gray-500">
+      <p>Cargando métricas de usuario...</p>
+    </div>
+  }
+</section>
