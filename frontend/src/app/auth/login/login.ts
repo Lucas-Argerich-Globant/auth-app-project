@@ -40,7 +40,7 @@ export class LoginComponent {
         return
       }
 
-      this.router.navigateByUrl('/')
+      this.router.navigateByUrl('/dashboard')
     })
   }
 }

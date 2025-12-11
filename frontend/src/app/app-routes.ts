@@ -11,5 +11,9 @@ export const routes: Routes = [
     path: 'dashboard',
     canMatch: [AuthenticatedRequired],
     loadComponent: () => import('./dashboard/dashboard').then((m) => m.Dashboard)
+  },
+  {
+    path: '**',
+    redirectTo: 'dashboard'
   }
 ]
