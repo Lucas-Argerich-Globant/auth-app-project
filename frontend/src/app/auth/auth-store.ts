@@ -32,11 +32,13 @@ export class AuthStore {
     })
   }
 
-  isAuthenticated: Observable<boolean> = toObservable(this.authStatus).pipe(
-    filter((status) => status !== 'pending'),
-    map((status) => status === 'authenticated'),
-    take(1)
-  )
+  isAuthenticated() {
+    return toObservable(this._authStatus).pipe(
+      filter((status) => status !== 'pending'),
+      map((status) => status === 'authenticated'),
+      take(1)
+    )
+  }
 
   login(email: string, password: string): Observable<AuthStoreResult> {
     return this.http.post<AuthResponseData>(`${api_url}/auth/login`, { email, password }).pipe(
