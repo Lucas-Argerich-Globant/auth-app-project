@@ -21,6 +21,10 @@ export class InputComponent {
     return this.control().hasValidator(Validators.required)
   }
 
+  invalid() {
+    return this.control().invalid
+  }
+
   errorMessage() {
     const errors = this.control().errors
     if (!errors) {

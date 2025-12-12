@@ -9,6 +9,8 @@
     [name]="name()"
     [type]="type()"
     [placeholder]="placeholder()"
+    [ariaRequired]="required() || null"
+    [ariaInvalid]="invalid() || null"
   />
   @if (hasError()) {
   <span class="text-red-600 text-sm">{{ errorMessage() }}</span>
