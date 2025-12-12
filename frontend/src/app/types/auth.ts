@@ -7,8 +7,8 @@ export type User = {
   middleName?: string
   lastName: string
   role: string
-  createdAt: string
-  updatedAt: string
+  createdAt: Date
+  updatedAt: Date
 }
 
 export type ApiResponse<T> =
