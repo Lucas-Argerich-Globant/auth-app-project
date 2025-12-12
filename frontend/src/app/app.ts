@@ -1,6 +1,6 @@
 import { Component, inject, signal } from '@angular/core'
 import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router'
-import { AuthStore } from './auth/auth-store'
+import { AuthStore } from './services/auth-store'
 
 @Component({
   selector: 'app-root',

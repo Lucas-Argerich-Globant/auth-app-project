@@ -1,16 +1,16 @@
 import { Routes } from '@angular/router'
-import { AuthenticatedRequired, UnAuthenticatedRequired } from './auth/auth-required'
+import { AuthenticatedRequired, UnAuthenticatedRequired } from './guards/auth-required'
 
 export const routes: Routes = [
   {
     path: 'auth',
     canMatch: [UnAuthenticatedRequired],
-    loadChildren: () => import('./auth/auth-routes')
+    loadChildren: () => import('./pages/auth/auth.routes')
   },
   {
     path: 'dashboard',
     canMatch: [AuthenticatedRequired],
-    loadComponent: () => import('./dashboard/dashboard').then((m) => m.Dashboard)
+    loadComponent: () => import('./pages/dashboard/dashboard').then((m) => m.Dashboard)
   },
   {
     path: '**',

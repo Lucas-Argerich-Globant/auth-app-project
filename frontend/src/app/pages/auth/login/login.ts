@@ -1,7 +1,7 @@
 import { Component, inject, signal } from '@angular/core'
-import { InputComponent } from '../../shared/ui/input/input'
+import { InputComponent } from '../../../components/ui/input/input'
 import { FormBuilder, FormControl, ReactiveFormsModule, Validators } from '@angular/forms'
-import { AuthStore } from '../auth-store'
+import { AuthStore } from '../../../services/auth-store'
 import { Router } from '@angular/router'
 
 @Component({

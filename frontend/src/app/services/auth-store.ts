@@ -1,8 +1,8 @@
 import { HttpClient, HttpContext } from '@angular/common/http'
 import { computed, effect, inject, Injectable, signal } from '@angular/core'
 import { catchError, filter, map, Observable, of, take, tap } from 'rxjs'
-import { AuthResponseData, AuthStatus, AuthStoreResult, User } from './auth-types'
-import { AUTH_HTTP_CREDENTIALS_INTERCEPTOR_DISABLED } from './auth-http-credentials'
+import { AuthResponseData, AuthStatus, AuthStoreResult, User } from '../types/auth'
+import { AUTH_HTTP_CREDENTIALS_INTERCEPTOR_DISABLED } from '../interceptors/auth-http-credentials'
 import { toObservable } from '@angular/core/rxjs-interop'
 
 const api_url = 'http://localhost:3000/api'

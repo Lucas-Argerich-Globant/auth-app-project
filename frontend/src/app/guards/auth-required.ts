@@ -1,6 +1,6 @@
 import { inject } from '@angular/core'
 import { CanMatchFn, Route, Router, UrlSegment } from '@angular/router'
-import { AuthStore } from './auth-store'
+import { AuthStore } from '../services/auth-store'
 import { firstValueFrom } from 'rxjs'
 
 export const AuthenticatedRequired: CanMatchFn = async (route: Route, segments: UrlSegment[]) => {

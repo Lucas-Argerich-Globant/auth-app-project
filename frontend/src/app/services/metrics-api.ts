@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http'
 import { inject, Injectable } from '@angular/core'
-import { AdminMetrics, UserMetrics } from './metrics-types'
+import { AdminMetrics, UserMetrics } from '../types/metrics'
 import { map } from 'rxjs'
-import { ApiResponse } from '../auth/auth-types'
+import { ApiResponse } from '../types/auth'
 
 const api_url = 'http://localhost:3000/api'
 

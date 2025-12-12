@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core'
-import { AuthStore } from '../auth/auth-store'
+import { AuthStore } from '../../services/auth-store'
 import { UserMetrics } from "./user-metrics/user-metrics";
 import { AdminMetrics } from "./admin-metrics/admin-metrics";
 

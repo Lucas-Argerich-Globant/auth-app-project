@@ -1,5 +1,5 @@
 import { Component, computed, inject } from '@angular/core'
-import { MetricsApi } from '../metrics-api'
+import { MetricsApi } from '../../../services/metrics-api'
 import { rxResource } from '@angular/core/rxjs-interop'
 
 @Component({
