@@ -24,9 +24,7 @@
                 "input": "public"
               }
             ],
-            "styles": [
-              "src/styles.css"
-            ]
+            "styles": ["src/styles.css"]
           },
           "configurations": {
             "production": {
@@ -65,7 +63,13 @@
           "defaultConfiguration": "development"
         },
         "test": {
-          "builder": "@angular/build:unit-test"
+          "builder": "@angular/build:unit-test",
+          "options": {
+            "include": ["src/**/*.spec.ts"],
+            "providersFile": "src/test-providers.ts",
+            "coverage": true,
+            "browsers": ["chrome"]
+          }
         }
       }
     }

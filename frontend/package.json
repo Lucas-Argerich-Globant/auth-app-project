@@ -7,7 +7,8 @@
     "dev": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test --browsers=chrome",
+    "test:browser": "vitest"
   },
   "private": true,
   "packageManager": "npm@11.6.4",
@@ -26,10 +27,13 @@
     "@angular/cli": "^21.0.2",
     "@angular/compiler-cli": "^21.0.0",
     "@tailwindcss/postcss": "^4.1.12",
+    "@vitest/browser-webdriverio": "^4.0.15",
+    "@vitest/coverage-v8": "^4.0.15",
     "jsdom": "^27.1.0",
     "postcss": "^8.5.3",
     "tailwindcss": "^4.1.12",
     "typescript": "~5.9.2",
-    "vitest": "^4.0.8"
+    "vitest": "^4.0.8",
+    "webdriverio": "^9.21.0"
   }
 }
