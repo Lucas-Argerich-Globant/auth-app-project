@@ -7,6 +7,9 @@ import { toObservable } from '@angular/core/rxjs-interop'
 
 const api_url = 'http://localhost:3000/api'
 
+export type LoginParams = [email: string, password: string]
+export type RegisterParams = [email: string, password: string, name: { first: string; middle?: string; last: string }]
+
 /**
  * Central authentication state manager.
  *

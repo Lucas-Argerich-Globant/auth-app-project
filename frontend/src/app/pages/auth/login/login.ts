@@ -1,46 +1,33 @@
-import { Component, inject, signal } from '@angular/core'
-import { InputComponent } from '../../../components/ui/input/input'
-import { FormBuilder, FormControl, ReactiveFormsModule, Validators } from '@angular/forms'
-import { AuthStore } from '../../../services/auth-store'
+import { Component, inject } from '@angular/core'
 import { Router } from '@angular/router'
+import { AuthStore, LoginParams } from '../../../services/auth-store'
+import { LoginForm } from './login-form/login-form'
+import { Observable } from 'rxjs'
 
 @Component({
-  templateUrl: './login.html',
-  imports: [InputComponent, ReactiveFormsModule]
+  standalone: true,
+  imports: [LoginForm],
+  templateUrl: './login.html'
 })
 export class LoginComponent {
   private router = inject(Router)
   private authStore = inject(AuthStore)
-  private formBuilder = new FormBuilder()
-  protected isSubmitting = signal(false)
-  protected errorMessage = signal<string | null>(null)
 
-  protected loginForm = this.formBuilder.group({
-    email: ['', [Validators.required, Validators.email]],
-    password: ['', [Validators.required]]
-  })
+  protected login = (...params: LoginParams): Observable<void> => {
+    return new Observable((observer) => {
+      this.authStore.login(...params).subscribe({
+        next: ({ error }) => {
+          if (error) {
+            observer.error(error)
+            return
+          }
 
-  protected getControl(controlName: keyof typeof this.loginForm.controls): FormControl {
-    return this.loginForm.get(controlName) as FormControl
-  }
-
-  protected onSubmit() {
-    if (this.isSubmitting()) return
-    if (!this.loginForm.valid) return this.loginForm.markAllAsTouched()
-
-    this.isSubmitting.set(true)
-    this.errorMessage.set(null)
-
-    const formData = this.loginForm.value
-
-    this.authStore.login(formData.email!, formData.password!).subscribe(({ error }) => {
-      if (error) {
-        this.errorMessage.set(error)
-        this.isSubmitting.set(false)
-        return
-      }
-
-      this.router.navigateByUrl('/dashboard')
+          this.router.navigateByUrl('/dashboard')
+          observer.next()
+          observer.complete()
+        },
+        error: (err) => observer.error(err)
+      })
     })
   }
 }
