@@ -41,6 +41,13 @@ async function registerUser(req: Request, res: Response) {
     }
   })
 
+  await prisma.loginMetric.create({
+    data: {
+      success: true,
+      user_id: newUser.id
+    }
+  })
+
   // Parse and format the user object for the response
   const user = userSchema.parse(objectSnakeToCamelCase(newUser))
 
@@ -104,14 +111,12 @@ async function loginUser(req: Request, res: Response) {
     })
   }
 
-  prisma.loginMetric
-    .create({
-      data: {
-        success: true,
-        user_id: rawUser.id
-      }
-    })
-    .then()
+  await prisma.loginMetric.create({
+    data: {
+      success: true,
+      user_id: rawUser.id
+    }
+  })
 
   // Parse and format the user object for the response
   const user = userSchema.parse(objectSnakeToCamelCase(rawUser))
