@@ -1,22 +1,18 @@
-<form
-  class="max-w-lg mx-auto mt-10 px-4 pt-8 pb-16 rounded border border-gray-300 flex flex-col gap-4"
-  [formGroup]="loginForm"
-  (submit)="onSubmit()"
->
-  <app-input name="email" label="Email" type="email" placeholder="Enter your email" [control]="getControl('email')" />
+<form class="flex flex-col gap-4" [formGroup]="loginForm" (submit)="onSubmit()">
+  <app-input name="email" label="Email" type="email" placeholder="Ingrese su email" [control]="getControl('email')" />
   <app-input
     name="password"
-    label="Password"
+    label="Contraseña"
     type="password"
-    placeholder="Enter your password"
+    placeholder="Ingrese su contraseña"
     [control]="getControl('password')"
   />
-  <span class="text-red-600 text-sm">{{ errorMessage() }}</span>
+  <span class="text-red-600 text-sm font-medium px-1">{{ errorMessage() }}</span>
   <button
-    class="bg-blue-500 disabled:bg-blue-200 text-white py-2 px-4 rounded not-disabled:cursor-pointer hover:not-disabled:bg-blue-600 transition-colors"
+    class="bg-slate-800 disabled:bg-slate-200 text-white py-2 px-4 rounded not-disabled:cursor-pointer hover:not-disabled:bg-slate-900 transition-colors"
     type="submit"
     [disabled]="loginForm.invalid || isSubmitting()"
   >
-    Login
+    Iniciar Sesión
   </button>
 </form>

@@ -32,23 +32,23 @@ export class InputComponent {
     }
     switch (Object.keys(errors)[0]) {
       case 'required':
-        return 'This field is required'
+        return 'Este campo es obligatorio'
       case 'email':
-        return 'Please enter a valid email address'
+        return 'Por favor, ingrese una dirección de correo válida'
       case 'minlength':
-        return `Minimum length is ${errors['minlength'].requiredLength}`
+        return `La longitud mínima es ${errors['minlength'].requiredLength}`
       case 'maxlength':
-        return `Maximum length is ${errors['maxlength'].requiredLength}`
+        return `La longitud máxima es ${errors['maxlength'].requiredLength}`
       case 'min':
-        return `Minimum value is ${errors['min'].min}`
+        return `El valor mínimo es ${errors['min'].min}`
       case 'max':
-        return `Maximum value is ${errors['max'].max}`
+        return `El valor máximo es ${errors['max'].max}`
       case 'pattern':
-        return 'Invalid format'
+        return 'Formato inválido'
       case 'mismatch':
-        return 'Values do not match'
+        return 'Los valores no coinciden'
       default:
-        return 'Invalid field'
+        return 'Campo inválido'
     }
   }
 }

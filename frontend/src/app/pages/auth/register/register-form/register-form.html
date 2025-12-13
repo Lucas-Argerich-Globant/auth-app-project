@@ -1,56 +1,52 @@
-<form
-  class="max-w-lg mx-auto mt-10 px-4 pt-8 pb-16 rounded border border-gray-300 flex flex-col gap-4"
-  [formGroup]="registerForm"
-  (submit)="onSubmit()"
->
+<form class="flex flex-col gap-4" [formGroup]="registerForm" (submit)="onSubmit()">
   <fieldset class="flex flex-col gap-4 w-full">
     <app-input
       name="firstName"
-      label="First Name"
+      label="Nombre"
       type="text"
-      placeholder="Enter your first name"
+      placeholder="Ingrese su nombre"
       [control]="getControl('name.first')"
       class="shrink"
     />
     <app-input
       name="middleName"
-      label="Middle Name"
+      label="Segundo Nombre"
       type="text"
-      placeholder="Enter your middle name"
+      placeholder="Ingrese su segundo nombre (opcional)"
       [control]="getControl('name.middle')"
       class="shrink"
     />
     <app-input
       name="lastName"
-      label="Last Name"
+      label="Apellido"
       type="text"
-      placeholder="Enter your last name"
+      placeholder="Ingrese su apellido"
       [control]="getControl('name.last')"
       class="shrink"
     />
   </fieldset>
   <span class="w-full h-px bg-gray-300 my-4"></span>
-  <app-input name="email" label="Email" type="email" placeholder="Enter your email" [control]="getControl('email')" />
+  <app-input name="email" label="Email" type="email" placeholder="Ingrese su correo" [control]="getControl('email')" />
   <app-input
     name="password"
-    label="Password"
+    label="Contraseña"
     type="password"
-    placeholder="Enter your password"
+    placeholder="Ingrese una contraseña"
     [control]="getControl('password')"
   />
   <app-input
     name="repeatPassword"
-    label="Repeat Password"
+    label="Repetir Contraseña"
     type="password"
-    placeholder="Repeat your password"
+    placeholder="Repita su contraseña"
     [control]="getControl('repeatPassword')"
   />
-  <span class="text-red-600 text-sm">{{ errorMessage() }}</span>
+  <span class="text-red-600 text-sm font-medium px-1">{{ errorMessage() }}</span>
   <button
-    class="bg-blue-500 disabled:bg-blue-200 text-white py-2 px-4 rounded not-disabled:cursor-pointer hover:not-disabled:bg-blue-600 transition-colors"
+    class="bg-slate-800 disabled:bg-slate-200 text-white py-2 px-4 rounded not-disabled:cursor-pointer hover:not-disabled:bg-slate-900 transition-colors"
     type="submit"
     [disabled]="registerForm.invalid || isSubmitting()"
   >
-    Register
+    Registrarse
   </button>
 </form>
