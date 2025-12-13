@@ -1,0 +1,39 @@
+<header class="border-b border-gray-200 bg-white px-8 py-4">
+  <nav class="mx-auto flex max-w-7xl items-center justify-between">
+    <!-- Logo / Home -->
+    <a
+      routerLink="/dashboard"
+      routerLinkActive="text-slate-600 font-semibold"
+      class="text-lg font-medium text-slate-800 hover:text-slate-600 transition-colors"
+    >
+      Dashboard
+    </a>
+
+    @switch (authStore.authStatus()) { @case ('unauthenticated') {
+    <div class="flex items-center gap-6">
+      <a
+        routerLink="/auth/register"
+        routerLinkActive="text-slate-900 font-semibold"
+        class="text-gray-600 hover:text-slate-900 transition-colors"
+      >
+        Registrarse
+      </a>
+
+      <a
+        routerLink="/auth/login"
+        routerLinkActive="bg-slate-500 hover:bg-slate-500! text-white"
+        class="rounded-md border border-slate-600 px-4 py-1.5 text-slate-800 hover:bg-slate-900 hover:text-white transition-colors"
+      >
+        Iniciar sesión
+      </a>
+    </div>
+    } @case ('authenticated') {
+    <button
+      (click)="logout()"
+      class="rounded-md border border-red-500 px-4 py-1.5 text-red-500 hover:bg-red-500 hover:text-white transition-colors cursor-pointer"
+    >
+      Cerrar sesión
+    </button>
+    } }
+  </nav>
+</header>

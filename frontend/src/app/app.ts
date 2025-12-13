@@ -1,18 +1,10 @@
-import { Component, inject, signal } from '@angular/core'
-import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router'
-import { AuthStore } from './services/auth-store'
+import { Component } from '@angular/core'
+import { RouterOutlet } from '@angular/router'
+import { Navbar } from "./components/ui/navbar/navbar";
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, RouterLink, RouterLinkActive],
+  imports: [RouterOutlet, Navbar],
   templateUrl: './app.html'
 })
-export class App {
-  protected authStore = inject(AuthStore)
-  protected router = inject(Router)
-
-  logout() {
-    this.authStore.logout()
-    this.router.navigateByUrl('/')
-  }
-}
+export class App {}
