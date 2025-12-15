@@ -7,7 +7,16 @@
     placeholder="Ingrese su contraseña"
     [control]="getControl('password')"
   />
-  <span class="text-red-600 text-sm font-medium px-1">{{ errorMessage() }}</span>
+  @if (errorMessage()) {
+  <div class="flex items-center mt-1">
+    <span
+      class="inline-flex h-4 w-4 items-center justify-center rounded-full border border-slate-800 text-[10px] font-bold text-slate-800"
+    >
+      !
+    </span>
+    <span class="text-slate-900 text-sm font-medium px-1">{{ errorMessage() }}</span>
+  </div>
+  }
   <button
     class="bg-slate-800 disabled:bg-slate-200 text-white py-2 px-4 rounded not-disabled:cursor-pointer hover:not-disabled:bg-slate-900 transition-colors"
     type="submit"

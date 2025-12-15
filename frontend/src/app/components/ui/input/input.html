@@ -1,6 +1,8 @@
 <div class="flex flex-col gap-1">
   @if (label()) {
-  <label [for]="name()" class="ml-1 flex text-sm font-medium">{{ label() }} @if(required()){ <span class="text-gray-900">*</span>} </label>
+  <label [for]="name()" class="ml-1 flex text-sm font-medium"
+    >{{ label() }} @if(required()){ <span class="text-gray-900">*</span>}
+  </label>
   }
   <input
     class="border border-gray-300 rounded px-2 py-1"
@@ -13,6 +15,13 @@
     [ariaInvalid]="invalid() || null"
   />
   @if (hasError()) {
-  <span class="text-red-600 text-sm font-medium px-1">{{ errorMessage() }}</span>
+    <div class="flex items-center mt-1">
+      <span
+        class="inline-flex h-4 w-4 items-center justify-center rounded-full border border-slate-800 text-[10px] font-bold text-slate-800"
+      >
+        !
+      </span>
+      <span class="text-slate-900 text-sm font-medium px-1">{{ errorMessage() }}</span>
+    </div>
   }
 </div>

@@ -1,4 +1,4 @@
-import { Component, input, signal } from '@angular/core'
+import { Component, inject, input, signal } from '@angular/core'
 import {
   AbstractControl,
   FormBuilder,
@@ -12,6 +12,7 @@ import { FormControlName } from '../../../../types/generics'
 import { InputComponent } from '../../../../components/ui/input/input'
 import { Observable } from 'rxjs'
 import { RegisterParams } from '../../../../services/auth-store'
+import { Router } from '@angular/router'
 
 @Component({
   selector: 'register-form',
@@ -19,8 +20,10 @@ import { RegisterParams } from '../../../../services/auth-store'
   templateUrl: './register-form.html'
 })
 export class RegisterForm {
+  private router = inject(Router)
   private formBuilder = new FormBuilder()
 
+  protected formStep = signal<'name' | 'credentials'>('name')
   protected isSubmitting = signal(false)
   protected errorMessage = signal<string | null>(null)
 
@@ -76,6 +79,14 @@ export class RegisterForm {
 
   protected getControl(controlName: FormControlName<typeof this.registerForm>): FormControl {
     return this.registerForm.get(controlName) as FormControl
+  }
+  
+  protected navigateToLogin() {
+    this.router.navigateByUrl('auth/login')
+  }
+
+  protected goToStep(step: ReturnType<typeof this.formStep>) {
+    this.formStep.set(step)
   }
 
   protected onSubmit() {
