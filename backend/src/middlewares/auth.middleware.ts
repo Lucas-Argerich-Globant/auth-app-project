@@ -17,7 +17,7 @@ export async function auth(req: Request, res: Response, next: NextFunction) {
     const authPayload = decodeToken(token)
 
     if (authPayload.exp && Date.now() >= authPayload.exp * 1000) {
-      return res.status(401).json({ status: 'error', message: 'Token expired' })
+      return res.status(401).json({ status: 'error', message: 'Token expirado' })
     }
 
     const user = await prisma.user.findFirst({ where: { id: authPayload.user.id }})
@@ -26,13 +26,13 @@ export async function auth(req: Request, res: Response, next: NextFunction) {
     next()
   } catch (err) {
     console.error('JWT verification error:', err)
-    return res.status(401).json({ status: 'error', message: 'Invalid token' })
+    return res.status(401).json({ status: 'error', message: 'Token invalido' })
   }
 }
 
 export function requireAuth(req: Request, res: Response, next: NextFunction) {
   if (!req.user) {
-    return res.status(401).json({ status: 'error', message: 'Unauthorized' })
+    return res.status(401).json({ status: 'error', message: 'No autorizado' })
   }
   next()
 }
@@ -40,7 +40,7 @@ export function requireAuth(req: Request, res: Response, next: NextFunction) {
 export function requireRole(...roles: User['role'][]) {
   return (req: Request, res: Response, next: NextFunction) => {
     if (!req.user || !roles.includes(req.user.role)) {
-      return res.status(403).json({ status: 'error', message: 'Forbidden' })
+      return res.status(403).json({ status: 'error', message: 'Acceso prohibido' })
     }
     next()
   }

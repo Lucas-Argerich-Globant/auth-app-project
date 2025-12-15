@@ -6,13 +6,13 @@ export default function errorMiddleware(err: Error, _req: Request, res: Response
     console.log(err)
     return res.status(400).json({
       status: 'error',
-      message: 'Invalid request data',
+      message: 'Información invalida o faltante',
     })
   }
   
   console.error('Error:', err)
   return res.status(500).json({
     status: 'error',
-    message: 'Internal server error',
+    message: 'Error interno del servidor',
   })
 }

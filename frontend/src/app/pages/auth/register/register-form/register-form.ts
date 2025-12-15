@@ -1,5 +1,13 @@
 import { Component, input, signal } from '@angular/core'
-import { AbstractControl, FormBuilder, FormControl, ReactiveFormsModule, ValidatorFn, Validators } from '@angular/forms'
+import {
+  AbstractControl,
+  FormBuilder,
+  FormControl,
+  ReactiveFormsModule,
+  ValidationErrors,
+  ValidatorFn,
+  Validators
+} from '@angular/forms'
 import { FormControlName } from '../../../../types/generics'
 import { InputComponent } from '../../../../components/ui/input/input'
 import { Observable } from 'rxjs'
@@ -26,11 +34,26 @@ export class RegisterForm {
         last: ['', [Validators.required]]
       }),
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(8), Validators.pattern(/^(?=.*[0-9]).{8,}$/)]],
+      password: ['', [Validators.required, Validators.minLength(8), this.passwordPatternValidator()]],
       repeatPassword: ['', [Validators.required]]
     },
     { validators: this.passwordMatchValidator() }
   )
+
+  private passwordPatternValidator(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const password = control.value
+
+      const regex = /^(?=.*[0-9]).{8,}$/
+      const valid = regex.test(password)
+
+      if (!valid) {
+        return { passwordpattern: true }
+      }
+
+      return null
+    }
+  }
 
   private passwordMatchValidator(): ValidatorFn {
     return (formGroup: AbstractControl): { [key: string]: any } | null => {

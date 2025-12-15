@@ -36,7 +36,7 @@ export class InputComponent {
       case 'email':
         return 'Por favor, ingrese una dirección de correo válida'
       case 'minlength':
-        return `La longitud mínima es ${errors['minlength'].requiredLength}`
+        return `La longitud mínima es de ${errors['minlength'].requiredLength} ${errors['minlength'].requiredLength === 1 ? 'carácter' : 'caracteres'}`
       case 'maxlength':
         return `La longitud máxima es ${errors['maxlength'].requiredLength}`
       case 'min':
@@ -45,6 +45,8 @@ export class InputComponent {
         return `El valor máximo es ${errors['max'].max}`
       case 'pattern':
         return 'Formato inválido'
+      case 'passwordpattern':
+        return 'La contraseña debe contener al menos un numero'
       case 'mismatch':
         return 'Los valores no coinciden'
       default:

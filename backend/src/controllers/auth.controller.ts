@@ -20,7 +20,7 @@ async function registerUser(req: Request, res: Response) {
     // If user exists, return error
     return res.status(400).json({
       status: 'error',
-      message: 'User with this email already exists'
+      message: 'Ya existe una cuenta con este correo'
     })
   }
 
@@ -85,7 +85,7 @@ async function loginUser(req: Request, res: Response) {
 
     return res.status(400).json({
       status: 'error',
-      message: 'Invalid email or password'
+      message: 'Correo o contraseña incorrecto'
     })
   }
 
@@ -107,7 +107,7 @@ async function loginUser(req: Request, res: Response) {
 
     return res.status(400).json({
       status: 'error',
-      message: 'Invalid email or password'
+      message: 'Correo o contraseña incorrecto'
     })
   }
 
@@ -147,7 +147,7 @@ async function getUser(req: Request, res: Response) {
   if (!rawUser) {
     return res.status(404).json({
       status: 'error',
-      message: 'User not found'
+      message: 'Usuario no encontrado'
     })
   }
 

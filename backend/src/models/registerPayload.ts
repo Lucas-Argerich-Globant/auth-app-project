@@ -5,7 +5,7 @@ const registerPayloadSchema = z.object({
   middleName: z.string().optional(),
   lastName: z.string().min(1),
   email: z.email(),
-  password: z.string().min(6),
+  password: z.string().min(8).regex(/\d/)
 })
 
 export type RegisterPayload = z.infer<typeof registerPayloadSchema>
