@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core'
+import { Component, computed, input, signal } from '@angular/core'
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms'
 
 @Component({
@@ -12,6 +12,16 @@ export class InputComponent {
   label = input('Label')
   placeholder = input('Placeholder')
   control = input<FormControl>(new FormControl(''))
+
+  protected toggleState = signal(false)
+
+  protected computedType = computed(() => {
+    if (this.type() === 'password') {
+      return this.toggleState() ? 'text' : 'password'
+    }
+
+    return this.type()
+  })
 
   hasError() {
     return this.control().invalid && this.control().touched
@@ -52,5 +62,9 @@ export class InputComponent {
       default:
         return 'Campo inválido'
     }
+  }
+
+  protected toggle() {
+    this.toggleState.update((value) => !value)
   }
 }
