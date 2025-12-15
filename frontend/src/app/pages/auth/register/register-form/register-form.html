@@ -32,7 +32,7 @@
         [disabled]="isSubmitting()"
         (click)="navigateToLogin()"
       >
-        Volver
+        Cancelar
       </button>
       <button
         class="flex-1 bg-slate-800 disabled:bg-slate-200 text-white py-2 px-4 rounded not-disabled:cursor-pointer hover:not-disabled:bg-slate-900 transition-colors"
@@ -77,13 +77,23 @@
       <span class="text-slate-900 text-sm font-medium px-1">{{ errorMessage() }}</span>
     </div>
     }
+    <div class="flex gap-2 mt-8">
+      <button
+        class="flex-1 bg-white text-slate-800 border border-slate-800 py-2 px-4 rounded not-disabled:cursor-pointer transition-colors"
+        type="button"
+        [disabled]="isSubmitting()"
+        (click)="goToStep('name')"
+      >
+        Volver
+      </button>
     <button
-      class="bg-slate-800 disabled:bg-slate-200 text-white py-2 px-4 rounded not-disabled:cursor-pointer hover:not-disabled:bg-slate-900 transition-colors"
+      class="flex-1 bg-slate-800 disabled:bg-slate-200 text-white py-2 px-4 rounded not-disabled:cursor-pointer hover:not-disabled:bg-slate-900 transition-colors"
       type="submit"
       [disabled]="registerForm.invalid || isSubmitting()"
     >
       Registrarse
     </button>
+    </div>
   </fieldset>
   } }
 </form>
