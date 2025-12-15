@@ -3,6 +3,7 @@ import { FormBuilder, FormControl, ReactiveFormsModule, Validators } from '@angu
 import { InputComponent } from '../../../../components/ui/input/input'
 import { Observable } from 'rxjs'
 import { LoginParams } from '../../../../services/auth-store'
+import { HttpErrorResponse } from '@angular/common/http'
 
 @Component({
   selector: 'login-form',
@@ -41,7 +42,12 @@ export class LoginForm {
 
     this.login()(email!, password!).subscribe({
       error: (err) => {
-        this.errorMessage.set(err instanceof Error ? err.message : String(err))
+        if (err instanceof Error) {
+          this.errorMessage.set(err.message)
+        }
+        if (err instanceof HttpErrorResponse) {
+          this.errorMessage.set('Error de conexión')
+        }
         this.isSubmitting.set(false)
       },
       complete: () => {

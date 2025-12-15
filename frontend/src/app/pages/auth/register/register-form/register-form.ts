@@ -13,6 +13,7 @@ import { InputComponent } from '../../../../components/ui/input/input'
 import { Observable } from 'rxjs'
 import { RegisterParams } from '../../../../services/auth-store'
 import { Router } from '@angular/router'
+import { HttpErrorResponse } from '@angular/common/http'
 
 @Component({
   selector: 'register-form',
@@ -80,7 +81,7 @@ export class RegisterForm {
   protected getControl(controlName: FormControlName<typeof this.registerForm>): FormControl {
     return this.registerForm.get(controlName) as FormControl
   }
-  
+
   protected navigateToLogin() {
     this.router.navigateByUrl('auth/login')
   }
@@ -105,7 +106,12 @@ export class RegisterForm {
 
     this.register()(email, password, name).subscribe({
       error: (err) => {
-        this.errorMessage.set(err instanceof Error ? err.message : String(err))
+        if (err instanceof Error) {
+          this.errorMessage.set(err.message)
+        }
+        if (err instanceof HttpErrorResponse) {
+          this.errorMessage.set('Error de conexión')
+        }
         this.isSubmitting.set(false)
       },
       complete: () => {
