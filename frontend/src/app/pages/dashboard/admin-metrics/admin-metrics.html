@@ -1,50 +1,52 @@
 <section class="pt-6">
-  <h2 class="text-2xl font-semibold text-gray-800 mb-6">Resumen del Sistema (Administrador)</h2>
+  <h2 class="mb-6 text-2xl font-semibold text-gray-800">Resumen del Sistema (Administrador)</h2>
 
   @if (metrics()) {
-  <div class="space-y-8">
-    <div class="space-y-4">
+  <div class="space-y-10">
+    <!-- Resumen de Cuentas -->
+    <section class="space-y-4">
       <h3 class="text-xl font-medium text-gray-700">Resumen de Cuentas</h3>
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        <div class="bg-white p-6 shadow-lg rounded-xl border border-gray-100">
-          <span class="text-sm font-medium text-gray-500 block">Total de Usuarios</span>
-          <p class="mt-1 text-3xl font-bold text-gray-900">{{metrics()!.account.total}}</p>
-        </div>
 
-        <div class="bg-white p-6 shadow-lg rounded-xl border border-gray-100">
-          <span class="text-sm font-medium text-gray-500 block">Usuarios Activos</span>
-          <p class="mt-1 text-3xl font-bold text-gray-900">{{metrics()!.account.active}}</p>
-        </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <metric-cell title="Total de Usuarios" [value]="metrics()!.account.total" />
+
+        <metric-cell title="Usuarios Activos" [value]="metrics()!.account.active" />
 
         <div class="hidden lg:block"></div>
         <div class="hidden lg:block"></div>
       </div>
-    </div>
+    </section>
 
-    <div class="space-y-4">
+    <!-- Intentos de Acceso -->
+    <section class="space-y-4">
       <h3 class="text-xl font-medium text-gray-700">Intentos de Acceso al Sistema</h3>
+
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        <div class="bg-white p-6 shadow-lg rounded-xl border border-gray-100">
-          <span class="text-sm font-medium text-gray-500 block">Accesos Exitosos (Total)</span>
-          <p class="mt-1 text-3xl font-bold text-gray-900">{{metrics()!.logins.successful.total}}</p>
-        </div>
+        <metric-cell
+          title="Accesos Exitosos"
+          tooltip="Total de inicios de sesión exitosos"
+          [value]="metrics()!.logins.successful.total"
+        />
 
-        <div class="bg-white p-6 shadow-lg rounded-xl border border-gray-100">
-          <span class="text-sm font-medium text-gray-500 block">Accesos Fallidos (Total)</span>
-          <p class="mt-1 text-3xl font-bold text-gray-900">{{metrics()!.logins.unsuccessful.total}}</p>
-        </div>
+        <metric-cell
+          title="Accesos Fallidos"
+          tooltip="Total de intentos de acceso fallidos"
+          [value]="metrics()!.logins.unsuccessful.total"
+        />
 
-        <div class="bg-white p-6 shadow-lg rounded-xl border border-gray-100">
-          <span class="text-sm font-medium text-gray-500 block">Cuenta No Encontrada</span>
-          <p class="mt-1 text-3xl font-bold text-gray-900">{{metrics()!.logins.unsuccessful.accountNotFound}}</p>
-        </div>
+        <metric-cell
+          title="Cuenta No Encontrada"
+          tooltip="Intentos con correos inexistentes"
+          [value]="metrics()!.logins.unsuccessful.accountNotFound"
+        />
 
-        <div class="bg-white p-6 shadow-lg rounded-xl border border-gray-100">
-          <span class="text-sm font-medium text-gray-500 block">Contraseña Incorrecta</span>
-          <p class="mt-1 text-3xl font-bold text-gray-900">{{metrics()!.logins.unsuccessful.incorrectPassword}}</p>
-        </div>
+        <metric-cell
+          title="Contraseña Incorrecta"
+          tooltip="Intentos con contraseña inválida"
+          [value]="metrics()!.logins.unsuccessful.incorrectPassword"
+        />
       </div>
-    </div>
+    </section>
   </div>
   } @else {
   <div class="p-6 bg-white rounded-xl shadow-md text-gray-500">

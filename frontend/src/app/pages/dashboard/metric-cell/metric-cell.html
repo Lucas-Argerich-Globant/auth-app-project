@@ -1,0 +1,21 @@
+<div class="bg-white p-6 h-30 max-h-30 shadow-lg rounded-xl border border-gray-100 transition-shadow hover:shadow-xl relative">
+  <div class="flex items-center justify-between">
+    <div class="flex gap-1 items-center">
+      <span class="text-sm font-medium text-slate-600">{{title()}}</span>
+      @if (tooltip()) {
+      <div class="mb-0.5">
+        <fa-icon [icon]="infoCircle" class="text-slate-700 peer" size="sm" />
+        <p
+          class="absolute top-2 left-4 -right-4 -translate-y-full w-[inherit] bg-white p-4 shadow-lg text-sm text-slate-600 rounded opacity-0 peer-hover:opacity-100 transition-opacity z-50"
+        >
+          {{tooltip()}}
+        </p>
+      </div>
+      }
+    </div>
+    @if (icon()) {
+    <fa-icon [icon]="icon()" class="text-slate-800" size="lg" />
+    }
+  </div>
+  <p class="mt-2 text-3xl font-bold text-gray-900">{{value()}}</p>
+</div>

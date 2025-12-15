@@ -3,10 +3,10 @@
     <h1 class="text-3xl md:text-4xl font-extrabold text-gray-900 tracking-tight">
       ¡Bienvenido de nuevo, {{user?.firstName}}!
     </h1>
-    <p class="text-lg text-gray-500 mt-1">Resumen de tu panel de control de un vistazo.</p>
+    <p class="text-lg text-gray-500 mt-1">Resumen de tu panel de control.</p>
   </header>
 
-  <section class="space-y-8">
+  <section class="space-y-8 flex flex-col gap-6 mb-20">
     <user-metrics />
 
     @if (user?.role === 'admin') {
