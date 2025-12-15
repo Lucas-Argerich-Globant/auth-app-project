@@ -69,6 +69,27 @@ npm run setup:prisma
 
 <br>
 
+### 8. Create Admin User
+
+After setting up Prisma, create the default admin user by running:
+
+```bash
+npm run setup:admin
+```
+
+This command runs a script that inserts an admin user into the database.
+
+**Default Credentials**
+
+Email: admin@globant.com
+
+Password: admin1234
+
+⚠️ For development use only.
+Change or remove this user before production.
+
+<br>
+
 ## **Run the Application**
 Use the following command to start both the **``backend``** server and the **``frontend``** development server concurrently.
 

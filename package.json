@@ -8,9 +8,10 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "install-all": "npm install --prefix backend && npm install --prefix frontend",
+    "install-all": "npm install && npm install --prefix backend && npm install --prefix frontend",
     "setup:env": "cd backend && (copy .env.copy .env || cp .env.copy .env)",
     "setup:prisma": "cd backend && npx prisma db push && npx prisma generate",
+    "setup:admin": "cd backend && node ./prisma/admin.ts",
     "dev": "concurrently \"npm run dev --prefix backend\" \"npm run dev --prefix frontend\" --names \"BE,FE\" --prefix-colors \"blue,green\""
   },
   "devDependencies": {

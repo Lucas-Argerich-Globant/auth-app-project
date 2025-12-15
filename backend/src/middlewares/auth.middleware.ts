@@ -21,6 +21,11 @@ export async function auth(req: Request, res: Response, next: NextFunction) {
     }
 
     const user = await prisma.user.findFirst({ where: { id: authPayload.user.id }})
+
+    if (!user) {
+      return res.status(404).json({ status: 'error', message: 'Usuario no encontrado' })
+    }
+
     req.user = userSchema.parse(objectSnakeToCamelCase(user))
 
     next()
