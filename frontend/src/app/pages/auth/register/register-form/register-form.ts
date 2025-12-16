@@ -112,6 +112,8 @@ export class RegisterForm {
         if (err instanceof HttpErrorResponse) {
           this.errorMessage.set('Error de conexión')
         }
+
+        this.errorMessage.set(err)
         this.isSubmitting.set(false)
       },
       complete: () => {
